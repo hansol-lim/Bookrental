@@ -18,7 +18,7 @@ class Booklist(db.Model):
     date = db.Column(db.String(50))
 
 #page route
-@app.route('/', methods=['POST'])#첫 페이지
+@app.route('/')#첫 페이지
 def index():
     return render_template('index.html')
 
@@ -49,6 +49,13 @@ def addbook():
 def table():
 
     lists = Booklist.query.all()
+
+    return render_template('table.html', lists=lists)
+
+@app.route('/table2')#도서 목록 페이지
+def table2():
+
+    lists = Booklist.query.filter_by(status='대출가능').all()
 
     return render_template('table.html', lists=lists)
 
