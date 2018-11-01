@@ -1,21 +1,56 @@
 #import all
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
-#page route
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/sola/Desktop/bookrental/booklist.db'
 
-@app.route('/')#첫 페이지
+db = SQLAlchemy(app)
+
+#데이터 베이스 칼럼
+class Booklist(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50))
+    author = db.Column(db.String(50))
+    kategorie = db.Column(db.String(50))
+    status = db.Column(db.String(50))
+    date = db.Column(db.String(50))
+
+#page route
+@app.route('/', methods=['POST'])#첫 페이지
 def index():
     return render_template('index.html')
-
-@app.route('/table')#도서 전체 목록 페이지
-def table():
-    return render_template('table.html')
 
 @app.route('/mypage')#마이페이지
 def mypage():
     return render_template('mypage.html')
+
+@app.route('/add')#도서등록페이지
+def add():
+    return render_template('add.html')
+
+@app.route('/addbook', methods=['POST'])#등록한 도서를 데이터 베이스에 추가
+def addbook():
+    name = request.form['name']
+    author = request.form['author']
+    kategorie = request.form['kategorie']
+    status = request.form['status']
+    date = request.form['date']
+
+    booklist = Booklist(name=name,author=author,kategorie=kategorie,status=status,date=date)
+
+    db.session.add(booklist)
+    db.session.commit()
+
+    return redirect(url_for('add'))
+
+@app.route('/table')#도서 목록 페이지
+def table():
+
+    lists = Booklist.query.all()
+
+    return render_template('table.html', lists=lists)
 
 #앱 실행
 if __name__=='__main__':

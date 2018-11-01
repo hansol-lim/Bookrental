@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block body %}
+<!-- Main Content -->
+<br>
+<div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <form name="addForm" id="addForm" method="POST" action="{{ url_for('addbook') }}" novalidate>
+          <div class="control-group">
+            <div class="form-group floating-label-form-group controls">
+              <label>Name</label>
+              <input type="text" class="form-control" placeholder="Name" name="name" id="name" required data-validation-required-message="Please enter a bookname.">
+              <p class="help-block text-danger"></p>
+            </div>
+          </div>
+          <div class="control-group">
+            <div class="form-group floating-label-form-group controls">
+              <label>Author</label>
+              <input type="text" class="form-control" placeholder="Author" name="author" id="author" required data-validation-required-message="Please enter a author name.">
+              <p class="help-block text-danger"></p>
+            </div>
+          </div>
+          <div class="control-group">
+            <div class="form-group col-xs-12 floating-label-form-group controls">
+              <label>Kategorie</label>
+              <input type="text" class="form-control" placeholder="Kategorie" name="kategorie" id="kategorie" required data-validation-required-message="Please enter a book kategorie.">
+              <p class="help-block text-danger"></p>
+            </div>
+          </div>
+          <div class="control-group">
+            <div class="form-group col-xs-12 floating-label-form-group controls">
+              <label>Status</label>
+              <input type="text" class="form-control" placeholder="Status" name="status" id="status" required data-validation-required-message="Book status">
+              <p class="help-block text-danger"></p>
+            </div>
+          </div>
+          <div class="control-group">
+            <div class="form-group col-xs-12 floating-label-form-group controls">
+              <label>Date</label>
+              <input type="text" class="form-control" placeholder="Date" name="date" id="date" required data-validation-required-message="date">
+              <p class="help-block text-danger"></p>
+            </div>
+          </div>
+          <br>
+          <div id="success"></div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary" id="sendMessageButton">POST</button>
+          </div>
+        </form>
+      </div>
+    </div>
+</div>
+{% endblock body %}
