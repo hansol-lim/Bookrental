@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<br>
+<div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <form name="addForm" id="addForm" method="POST" action="{{ url_for('mypage') }}" novalidate>
+          <div class="control-group">
+            <div class="form-group floating-label-form-group controls">
+              <label>Your Name</label>
+              <input type="text" class="form-control" placeholder="ID" name="ID" id="ID" required data-validation-required-message="Please enter your name.">
+              <p class="help-block text-danger"></p>
+            </div>
+          </div>
+          <div class="control-group">
+            <div class="form-group floating-label-form-group controls">
+              <label>Password</label>
+              <input type="text" class="form-control" placeholder="password" name="password" id="password" required data-validation-required-message="Please enter a password.">
+              <p class="help-block text-danger"></p>
+            </div>
+          </div>
+          <br>
+          <div id="success"></div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary" id="sendMessageButton">LOGIN</button>
+          </div>
+        </form>
+      </div>
+    </div>
+</div>
+  {% endblock body%}

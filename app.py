@@ -17,6 +17,19 @@ class Booklist(db.Model):
     status = db.Column(db.String(50))
     date = db.Column(db.String(50))
 
+#사용자 로그인 기능
+#class User:
+
+
+
+
+
+
+
+
+
+
+
 #page route
 @app.route('/')#첫 페이지
 def index():
@@ -67,6 +80,9 @@ def table2():
 
     return render_template('table.html', lists=lists)
 
+@app.route('/login')#로그인 연습
+def logint():
+    return render_template('login.html')
 #앱 실행
 if __name__=='__main__':
     app.run(debug=True)
