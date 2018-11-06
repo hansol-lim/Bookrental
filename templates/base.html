@@ -31,8 +31,9 @@
         <a class="navbar-brand" href="{{ url_for('index') }}">HOME</a>
         <!-- 로그인이 안되있을 경우에는 Sign In , 로그인이 되어있을 경우에는 사용자 명을 보여주도록!! -->
         {% if User %}
+        <a class='btn' href="{{ url_for('mypage') }}">{{ user.username }}</a>
         {% else %}
-        <a class="btn" href="{{ url_for('mypage') }}">Sign In</a>
+        <a class="btn" href="{{ url_for('login') }}">Sign In</a>
         {% endif %}
       </div>
     </nav>

@@ -5,7 +5,7 @@
 <div class="container">
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
-        <form name="addForm" id="addForm" method="POST" action="{{ url_for('mypage') }}" novalidate>
+        <form name="addForm" id="addForm" method="POST" action="{{ url_for('index') }}" novalidate>
           <div class="control-group">
             <div class="form-group floating-label-form-group controls">
               <label>Your Name</label>
@@ -29,4 +29,4 @@
       </div>
     </div>
 </div>
-  {% endblock body%}
+{% endblock body%}

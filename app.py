@@ -1,20 +1,20 @@
 #import all
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-
-##from flaks_login import LoginManager,UserMixin
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 
 app = Flask(__name__)
 
 #데이터베이스 관리
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/sola/Desktop/bookrental/booklist.db'
-
-##app.config['SECRET_KEY'] = 'thisissecret'
+app.config['SECRET_KEY'] = 'thisissecret'
 
 db = SQLAlchemy(app)
 
+login_manager = LoginManager()
+login_manager.init_app(app)
 
-#데이터 베이스 칼럼
+#도서 데이터베이스
 class Booklist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50))
@@ -23,26 +23,35 @@ class Booklist(db.Model):
     status = db.Column(db.String(50))
     date = db.Column(db.String(50))
 
-#사용자 로그인 기능
-#class User:
+#사용자 데이터베이스
+class User(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(50),unique=True)
 
+#사용자 call back
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
+@app.route('/login', methods=['GET','POST'])#로그인
+def login():
+    form = LoginForm
+    return render_template('login.html')
 
-
-
-
-
-
-
-
+@app.route('/logout')#로그아웃
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
 
 #page route
 @app.route('/')#첫 페이지
 def index():
-
+    user = User.query.filter_by(username='sola').first()
+    login_user(user)
     return render_template('index.html')
 
 @app.route('/mypage')#마이페이지
+@login_required ##로그인한 사용자만 들어갈 수 있게 설정
 def mypage():
     return render_template('mypage.html')
 
@@ -65,12 +74,9 @@ def addbook():
 
     return redirect(url_for('add'))
 
-@app.route('/search', methods=['POST'])#검색기능
+@app.route('/search', methods=['POST'])#검색 도서 목록
 def search():
     book = request.form['book']
-    
-    #lists = Booklist.query.filter_by(name=book).all()
-    #lists = Booklist.query.filter_by(kind.like('%book%')).all()
     lists = Booklist.query.filter(Booklist.name.like('%%%s%%' % book)).all()
     return render_template('table.html', lists=lists)
 
@@ -81,14 +87,9 @@ def table():
 
 @app.route('/table2')#대출 가능 목록 페이지
 def table2():
-
     lists = Booklist.query.filter_by(status='대출가능').all()
-
     return render_template('table.html', lists=lists)
 
-@app.route('/login')#로그인 연습
-def logint():
-    return render_template('login.html')
 #앱 실행
 if __name__=='__main__':
     app.run(debug=True)
