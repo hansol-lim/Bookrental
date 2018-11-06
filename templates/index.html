@@ -10,10 +10,10 @@
             <h2>Bookrendtal System</h2>
           </div>
           <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
-              <form name="addForm" id="addForm" method="POST" action="{{ url_for('table') }}" novalidate>
+            <form name="addForm" id="addForm" method="POST" action="{{ url_for('search') }}" novalidate>
               <div class="form-row">
                 <div class="col-12 col-md-9 mb-2 mb-md-0">
-                  <input type="text" class="form-control form-control-lg" placeholder="도서명을 입력하세요...">
+                  <input type="text" class="form-control form-control-lg" placeholder="도서명을 입력하세요..." name="book" id="book">
                 </div>
                 <div class="col-12 col-md-3">
                   <button type="submit" class="btn btn-block btn-lg btn-primary">Search</button>

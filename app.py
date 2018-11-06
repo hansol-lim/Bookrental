@@ -20,6 +20,7 @@ class Booklist(db.Model):
 #page route
 @app.route('/')#첫 페이지
 def index():
+
     return render_template('index.html')
 
 @app.route('/mypage')#마이페이지
@@ -45,14 +46,21 @@ def addbook():
 
     return redirect(url_for('add'))
 
-@app.route('/table')#도서 목록 페이지
-def table():
-
-    lists = Booklist.query.all()
-
+@app.route('/search', methods=['POST'])#검색기능
+def search():
+    book = request.form['book']
+    
+    #lists = Booklist.query.filter_by(name=book).all()
+    #lists = Booklist.query.filter_by(kind.like('%book%')).all()
+    lists = Booklist.query.filter(Booklist.name.like('%%%s%%' % book)).all()
     return render_template('table.html', lists=lists)
 
-@app.route('/table2')#도서 목록 페이지
+@app.route('/table')#도서 목록 페이지
+def table():
+    lists = Booklist.query.all()
+    return render_template('table.html', lists=lists)
+
+@app.route('/table2')#대출 가능 목록 페이지
 def table2():
 
     lists = Booklist.query.filter_by(status='대출가능').all()
