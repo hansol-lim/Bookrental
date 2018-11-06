@@ -2,11 +2,17 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 
+##from flaks_login import LoginManager,UserMixin
+
 app = Flask(__name__)
 
+#데이터베이스 관리
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/sola/Desktop/bookrental/booklist.db'
 
+##app.config['SECRET_KEY'] = 'thisissecret'
+
 db = SQLAlchemy(app)
+
 
 #데이터 베이스 칼럼
 class Booklist(db.Model):
