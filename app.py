@@ -53,7 +53,7 @@ class RegisterForm(FlaskForm): #가입 화면 구성
     username = StringField('username', validators=[InputRequired(), Length(min=3, max=15)])
     password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
 
-@app.route('/login2', methods=['GET','POST'])#로그인 페이지
+@app.route('/', methods=['GET','POST'])#로그인 페이지
 def login2():
     form = LoginForm()
     
@@ -88,7 +88,7 @@ def logout():
     return redirect(url_for('login2'))
 
 #page route
-@app.route('/')#첫 페이지
+@app.route('/home')#첫 페이지
 def index():
     return render_template('index.html', name=current_user.username)
 
