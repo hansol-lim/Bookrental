@@ -90,7 +90,7 @@ def logout():
 #page route
 @app.route('/home')#첫 페이지
 def index():
-    return render_template('index.html', name=current_user.username)
+    return render_template('index.html') #name=current_user.username)
 
 @app.route('/mypage')#마이페이지
 @login_required ##로그인한 사용자만 들어갈 수 있게 설정
