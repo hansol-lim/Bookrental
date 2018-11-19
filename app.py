@@ -54,9 +54,8 @@ class RegisterForm(FlaskForm): #가입 화면 구성
     password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
 
 @app.route('/', methods=['GET','POST'])#로그인 페이지
-def login2():
+def login():
     form = LoginForm()
-    
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user:
@@ -64,10 +63,10 @@ def login2():
                 login_user(user, remember=form.remember.data)
                 return redirect(url_for('index'))
         return '이름이나 비밀번호를 다시 확인해 주세요'
-    return render_template('login2.html', form=form)
+    return render_template('login.html', form=form)
 
 @app.route('/signup', methods=['GET', 'POST'])#가입페이지
-def singup():
+def signup():
     
     form = RegisterForm()
 
@@ -77,7 +76,7 @@ def singup():
         db.session.add(new_user)
         db.session.commit()
 
-        return redirect(url_for('login2'))
+        return redirect(url_for('login'))
 
     return render_template('signup.html', form=form)
 
@@ -85,12 +84,13 @@ def singup():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('login2'))
+    return redirect(url_for('login'))
 
 #page route
-@app.route('/home')#첫 페이지
+@app.route('/home')#로그인 후 첫 페이지
+@login_required #로그인한 사용자만 접근 가능능
 def index():
-    return render_template('index.html') #name=current_user.username)
+    return render_template('index.html' , name=current_user.username)
 
 @app.route('/mypage')#마이페이지
 @login_required ##로그인한 사용자만 들어갈 수 있게 설정
@@ -120,17 +120,17 @@ def addbook():
 def search():
     book = request.form['book']
     lists = Booklist.query.filter(Booklist.name.like('%%%s%%' % book)).all()
-    return render_template('table.html', lists=lists)
+    return render_template('table.html', lists=lists, name=current_user.username)
 
 @app.route('/table')#도서 목록 페이지
 def table():
     lists = Booklist.query.all()
-    return render_template('table.html', lists=lists)
+    return render_template('table.html', lists=lists, name=current_user.username)
 
 @app.route('/table2')#대출 가능 목록 페이지
 def table2():
     lists = Booklist.query.filter_by(status='대출가능').all()
-    return render_template('table.html', lists=lists)
+    return render_template('table.html', lists=lists, name=current_user.username)
 
 #앱 실행
 if __name__=='__main__':

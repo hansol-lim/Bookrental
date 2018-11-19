@@ -1,32 +1,20 @@
 {% extends 'base.html' %}
-
+{% import 'bootstrap/wtf.html' as wtf %}
 {% block body %}
 <br>
-<div class="container">
-    <div class="row">
-      <div class="col-lg-8 col-md-10 mx-auto">
-        <form name="addForm" id="addForm" method="POST" action="{{ url_for('index') }}" novalidate>
-          <div class="control-group">
-            <div class="form-group floating-label-form-group controls">
-              <label>Your Name</label>
-              <input type="text" class="form-control" placeholder="ID" name="ID" id="ID" required data-validation-required-message="Please enter your name.">
-              <p class="help-block text-danger"></p>
-            </div>
-          </div>
-          <div class="control-group">
-            <div class="form-group floating-label-form-group controls">
-              <label>Password</label>
-              <input type="text" class="form-control" placeholder="password" name="password" id="password" required data-validation-required-message="Please enter a password.">
-              <p class="help-block text-danger"></p>
-            </div>
-          </div>
-          <br>
-          <div id="success"></div>
-          <div class="form-group">
-            <button type="submit" class="btn btn-primary" id="sendMessageButton">LOGIN</button>
-          </div>
-        </form>
-      </div>
-    </div>
-</div>
-{% endblock body%}
+    <div class="container">
+
+      <form class="form-signin" method="POST" action="/">
+        <h2 class="form-signin-heading">로그인을 해주세요</h2>
+        {{ form.hidden_tag() }}
+        {{ wtf.form_field(form.username) }}
+        {{ wtf.form_field(form.password) }}
+        {{ wtf.form_field(form.remember) }}
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
+      </form>
+      <br>
+      <form action="{{ url_for('signup') }}">
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
+      </form>
+    </div> 
+{% endblock body %}
