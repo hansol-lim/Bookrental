@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<br>
+
+<div class="container">
+    <h1>이미 존재하는 아이디, 이메일오류</h1>
+    <br>
+    <form action="{{ url_for('signup') }}">
+      <button class="btn btn-lg btn-primary btn-block" type="submit">Go to Sign up page</button>
+    </form>
+  </div> 
+{% endblock body %}

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<br>
+
+<div class="container">
+    <h1>아이디나 비밀번호를 다시 확인해주세요</h1>
+    <br>
+    <form action="{{ url_for('login') }}">
+      <button class="btn btn-lg btn-primary btn-block" type="submit">Go to Log In page</button>
+    </form>
+  </div> 
+{% endblock body %}

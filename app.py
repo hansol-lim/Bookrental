@@ -34,7 +34,7 @@ class Booklist(db.Model):
 #사용자 데이터베이스 칼럼 ... 슬랙과 연동하는 문제 추후 해결
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50),unique=True)
+    username = db.Column(db.String(50), unique=True)
     email = db.Column(db.String(50), unique=True)
     password = db.Column(db.String(80))
 
@@ -62,7 +62,7 @@ def login():
             if check_password_hash(user.password, form.password.data):
                 login_user(user, remember=form.remember.data)
                 return redirect(url_for('index'))
-        return '이름이나 비밀번호를 다시 확인해 주세요'
+        return render_template('loginerror.html')
     return render_template('login.html', form=form)
 
 @app.route('/signup', methods=['GET', 'POST'])#가입페이지
@@ -71,10 +71,15 @@ def signup():
     form = RegisterForm()
 
     if form.validate_on_submit():
-        hashed_password = generate_password_hash(form.password.data, method='sha256')
-        new_user = User(username=form.username.data, email=form.email.data, password=hashed_password)
-        db.session.add(new_user)
-        db.session.commit()
+        user = User.query.filter_by(username=form.username.data).first()
+        email = User.query.filter_by(email=form.email.data).first()
+        if user or email:
+            return render_template('signuperror.html')
+        else:
+            hashed_password = generate_password_hash(form.password.data, method='sha256')
+            new_user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+            db.session.add(new_user)
+            db.session.commit()
 
         return redirect(url_for('login'))
 
@@ -95,7 +100,7 @@ def index():
 @app.route('/mypage')#마이페이지
 @login_required ##로그인한 사용자만 들어갈 수 있게 설정
 def mypage():
-    return render_template('mypage.html')
+    return render_template('mypage.html', name=current_user.username)
 
 @app.route('/add')#도서등록페이지
 def add():
